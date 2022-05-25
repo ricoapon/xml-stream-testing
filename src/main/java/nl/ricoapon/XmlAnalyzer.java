@@ -18,11 +18,11 @@ public class XmlAnalyzer {
     public void parseTagCount(Writer writer) throws IOException {
         Map<String, Integer> tagsCount = new HashMap<>();
 
-        tagReader.readTags().forEach(tag -> {
+        for (Tag tag : StreamEx.of(tagReader.readTags())) {
             if (tag.type() != Tag.Type.CLOSE) {
                 tagsCount.put(tag.name(), tagsCount.getOrDefault(tag.name(), 0) + 1);
             }
-        });
+        }
 
         tagsCount.entrySet().stream()
                 .sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed())
