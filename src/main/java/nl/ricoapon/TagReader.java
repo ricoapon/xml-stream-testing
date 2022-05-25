@@ -59,9 +59,6 @@ public class TagReader {
 
                 while (hasNext()) {
                     char c = characterIterator.next();
-                    if (!hasNext()) {
-                        System.out.println(" Debug");
-                    }
 
                     // If we are inside the tag, and we find the closing tag, we can finish.
                     if (isInTag && c == '>') {
