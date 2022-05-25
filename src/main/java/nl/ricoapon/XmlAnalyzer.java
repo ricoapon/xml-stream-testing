@@ -31,6 +31,8 @@ public class XmlAnalyzer {
                         throw new RuntimeException(ex);
                     }
                 });
+
+        writer.close();
     }
 
     public void parseIntoTree(Writer writer) throws IOException {
