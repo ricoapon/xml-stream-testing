@@ -4,9 +4,7 @@ import one.util.streamex.StreamEx;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class XmlAnalyzer {
     private final TagReader tagReader;
@@ -56,5 +54,29 @@ public class XmlAnalyzer {
 
     private static String spaces(int indentation) {
         return new String(new char[indentation]).replace('\0', ' ');
+    }
+
+    public void parseIntoTreeWithCompletePath(Writer writer) throws IOException {
+        List<String> paths = new ArrayList<>();
+
+
+        for (Tag tag : StreamEx.of(tagReader.readTags())) {
+            if (tag.type() == Tag.Type.OPEN) {
+                paths.add(tag.name());
+                try {
+                    writer.write(concat(paths) + "\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (tag.type() == Tag.Type.CLOSE) {
+                paths.remove(paths.size() - 1);
+            }
+        }
+
+        writer.close();
+    }
+
+    private String concat(List<String> list) {
+        return String.join("/", list);
     }
 }

@@ -50,6 +50,28 @@ class XmlAnalyzerTest {
                 """));
     }
 
+    @Test
+    void parseIntoTreeWithCompletePath() throws IOException {
+        // Given
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Test.xml");
+        MockWriter mockWriter = new MockWriter();
+
+        // When
+        xmlAnalyzer.parseIntoTreeWithCompletePath(mockWriter);
+
+        // Then
+        assertThat(mockWriter.value(), equalTo("""
+                root
+                root/identifier
+                root/itemList
+                root/itemList/item
+                root/itemList/item/identifier
+                root/itemList/item
+                root/itemList/item/identifier
+                """));
+
+    }
+
     /**
      * Mock for {@link Writer}. Get the written string using {@link MockWriter#value()}.
      */
