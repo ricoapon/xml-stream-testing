@@ -1,0 +1,13 @@
+<?xml version='1.0' ?>
+<root>
+    <identifier>value1</identifier>
+    <emptyValue1/>
+    <itemList>
+        <item>
+            <identifier>value2</identifier>
+        </item>
+        <item>
+            <identifier>value3</identifier>
+        </item>
+    </itemList>
+</root>
