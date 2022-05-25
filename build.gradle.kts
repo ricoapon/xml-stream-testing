@@ -25,3 +25,8 @@ dependencies {
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
+
+tasks.withType<Test> {
+    // We have a large XML file that surely doesn't fit in this heap size. This way we can actually test everything works!
+    maxHeapSize = "10m"
+}
