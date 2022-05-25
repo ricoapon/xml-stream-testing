@@ -1,5 +1,7 @@
 package nl.ricoapon;
 
+import one.util.streamex.StreamEx;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Comparator;
@@ -33,4 +35,26 @@ public class XmlAnalyzer {
                 });
     }
 
+    public void parseIntoTree(Writer writer) throws IOException {
+        int indentation = 0;
+
+        for (Tag tag : StreamEx.of(tagReader.readTags())) {
+            if (tag.type() == Tag.Type.OPEN) {
+                try {
+                    writer.write(spaces(indentation) + tag.name() + "\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                indentation++;
+            } else if (tag.type() == Tag.Type.CLOSE) {
+                indentation--;
+            }
+        }
+
+        writer.close();
+    }
+
+    private static String spaces(int indentation) {
+        return new String(new char[indentation]).replace('\0', ' ');
+    }
 }

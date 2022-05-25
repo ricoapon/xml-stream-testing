@@ -29,6 +29,27 @@ class XmlAnalyzerTest {
                 """));
     }
 
+    @Test
+    void parseIntoTree() throws IOException {
+        // Given
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Test.xml");
+        MockWriter mockWriter = new MockWriter();
+
+        // When
+        xmlAnalyzer.parseIntoTree(mockWriter);
+
+        // Then
+        assertThat(mockWriter.value(), equalTo("""
+                root
+                 identifier
+                 itemList
+                  item
+                   identifier
+                  item
+                   identifier
+                """));
+    }
+
     /**
      * Mock for {@link Writer}. Get the written string using {@link MockWriter#value()}.
      */
