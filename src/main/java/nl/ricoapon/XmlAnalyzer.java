@@ -4,7 +4,11 @@ import one.util.streamex.StreamEx;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class XmlAnalyzer {
     private final TagReader tagReader;
@@ -14,16 +18,12 @@ public class XmlAnalyzer {
     }
 
     public void parseTagCount(Writer writer) throws IOException {
-        Map<String, Integer> tagsCount = new HashMap<>();
-
-        for (Tag tag : StreamEx.of(tagReader.readTags())) {
-            if (tag.type() != Tag.Type.CLOSE) {
-                tagsCount.put(tag.name(), tagsCount.getOrDefault(tag.name(), 0) + 1);
-            }
-        }
+        Map<String, Long> tagsCount = tagReader.readTags()
+                .filter(tag -> Tag.Type.CLOSE != tag.type())
+                .collect(Collectors.groupingBy(Tag::name, Collectors.counting()));
 
         tagsCount.entrySet().stream()
-                .sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed())
+                .sorted(Comparator.comparingLong(Map.Entry<String, Long>::getValue).reversed())
                 .forEach(e -> {
                     try {
                         writer.write(e.getValue() + " " + e.getKey() + "\n");
