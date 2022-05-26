@@ -11,6 +11,10 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Class that can create a stream of {@link Tag}s from an XML file. This means the file will not be load completely into
+ * memory, which is useful for parsing large files.
+ */
 @SuppressWarnings("ClassCanBeRecord")
 public class TagReader {
     private final Supplier<BufferedReader> readerSupplier;

@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * This class retrieves certain data from XML files and writes results to disk. This is done specifically to work with
+ * large XML files and prevent memory issues.
+ */
 public class XmlAnalyzer {
     private final TagReader tagReader;
 
@@ -19,6 +23,9 @@ public class XmlAnalyzer {
         this.tagReader = new TagReader(readerSupplier);
     }
 
+    /**
+     * Writes a summary of all tags with their count to the writer.
+     */
     public void parseTagCount(Writer writer) throws IOException {
         Map<String, Long> tagsCount = tagReader.readTags()
                 .filter(tag -> Tag.Type.CLOSE != tag.type())
@@ -37,6 +44,9 @@ public class XmlAnalyzer {
         writer.close();
     }
 
+    /**
+     * Writes the full tree with spaces showing the structure of the XML. Only non-empty tags are written to the file.
+     */
     public void parseIntoTree(Writer writer) throws IOException {
         int indentation = 0;
 
@@ -60,6 +70,9 @@ public class XmlAnalyzer {
         return new String(new char[indentation]).replace('\0', ' ');
     }
 
+    /**
+     * Writes every tag to a new line with the complete path to that tag prepended. Only non-empty tags are written to the file.
+     */
     public void parseIntoTreeWithCompletePath(Writer writer) throws IOException {
         List<String> paths = new ArrayList<>();
 
