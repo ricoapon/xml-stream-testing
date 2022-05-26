@@ -15,9 +15,8 @@ public class LargeTest {
 
     @BeforeAll
     static void createOutputDirs() {
-        if (!new File(OUTPUT_PATH).mkdirs()) {
-            throw new RuntimeException("Could not create output path");
-        }
+        //noinspection ResultOfMethodCallIgnored
+        new File(OUTPUT_PATH).mkdirs();
     }
 
     /**
