@@ -1,2 +1,2 @@
-rootProject.name = "stream-testing"
+rootProject.name = "xml-stream-testing"
 
