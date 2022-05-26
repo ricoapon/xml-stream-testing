@@ -2,26 +2,25 @@ package nl.ricoapon;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @SuppressWarnings("ClassCanBeRecord")
 public class TagReader {
-    private final String resourcePath;
+    private final Supplier<BufferedReader> readerSupplier;
 
-    public TagReader(String resourcePath) {
-        this.resourcePath = resourcePath;
+    public TagReader(Supplier<BufferedReader> readerSupplier) {
+        this.readerSupplier = readerSupplier;
     }
 
     public Stream<Tag> readTags() throws IOException {
-        //noinspection ConstantConditions
-        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(resourcePath)));
+        BufferedReader reader = readerSupplier.get();
         // We skip the first line which contains the XML declaration (<?xml ...>).
         reader.readLine();
 

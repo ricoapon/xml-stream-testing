@@ -5,13 +5,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.util.function.Supplier;
 
 /**
  * Tests in this class have no assertion. They are identical to tests in {@link XmlAnalyzer}, but now for large files.
- * This test
  */
 public class LargeTest {
     private final static String OUTPUT_PATH = "build/generated/large-test/";
+    private final static Supplier<BufferedReader> LARGE_XML = ReaderSupplierBuilder.fromClasspathResource("/Large.xml");
 
     @BeforeAll
     static void createOutputDirs() {
@@ -25,23 +26,19 @@ public class LargeTest {
     @Test
     @Disabled
     void readFullFileIntoMemory() {
-        //noinspection ConstantConditions
-        System.out.println(
-                new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/Large.xml")))
-                        .lines().toList()
-        );
+        System.out.println(LARGE_XML.get().lines().toList());
     }
 
     @Test
     void parseTagCount() throws IOException {
-        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Large.xml");
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer(LARGE_XML);
         Writer writer = new FileWriter(OUTPUT_PATH + "Frequency.txt");
         xmlAnalyzer.parseTagCount(writer);
     }
 
     @Test
     void parseIntoTree() throws IOException {
-        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Large.xml");
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer(LARGE_XML);
         Writer writer = new FileWriter(OUTPUT_PATH + "Tree.txt");
         xmlAnalyzer.parseIntoTree(writer);
     }
@@ -49,7 +46,7 @@ public class LargeTest {
     @Test
     void parseIntoTreeWithCompletePath() throws IOException {
         // Given
-        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Large.xml");
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer(LARGE_XML);
         Writer writer = new FileWriter(OUTPUT_PATH + "TreeWithPaths.txt");
         xmlAnalyzer.parseIntoTreeWithCompletePath(writer);
     }

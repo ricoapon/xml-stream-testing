@@ -2,19 +2,21 @@ package nl.ricoapon;
 
 import one.util.streamex.StreamEx;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class XmlAnalyzer {
     private final TagReader tagReader;
 
-    public XmlAnalyzer(String path) {
-        this.tagReader = new TagReader(path);
+    public XmlAnalyzer(Supplier<BufferedReader> readerSupplier) {
+        this.tagReader = new TagReader(readerSupplier);
     }
 
     public void parseTagCount(Writer writer) throws IOException {

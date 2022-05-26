@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.Writer;
 
+import static nl.ricoapon.TagReaderTest.TEST_XML;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 class XmlAnalyzerTest {
-
     @Test
     void parseTagCount() throws IOException {
         // Given
-        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Test.xml");
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer(TEST_XML);
         MockWriter mockWriter = new MockWriter();
 
         // When
@@ -32,7 +32,7 @@ class XmlAnalyzerTest {
     @Test
     void parseIntoTree() throws IOException {
         // Given
-        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Test.xml");
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer(TEST_XML);
         MockWriter mockWriter = new MockWriter();
 
         // When
@@ -53,7 +53,7 @@ class XmlAnalyzerTest {
     @Test
     void parseIntoTreeWithCompletePath() throws IOException {
         // Given
-        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer("/Test.xml");
+        XmlAnalyzer xmlAnalyzer = new XmlAnalyzer(TEST_XML);
         MockWriter mockWriter = new MockWriter();
 
         // When
