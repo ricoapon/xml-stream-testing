@@ -12,12 +12,22 @@ import java.util.function.Supplier;
  */
 public class LargeTest {
     private final static String OUTPUT_PATH = "build/generated/large-test/";
-    private final static Supplier<BufferedReader> LARGE_XML = ReaderSupplierBuilder.fromClasspathResource("/Large.xml");
+    private final static String LARGE_XML_PATH = OUTPUT_PATH + "Large.xml";
+    private final static Supplier<BufferedReader> LARGE_XML = ReaderSupplierBuilder.fromFileOnDisk(LARGE_XML_PATH);
 
     @BeforeAll
-    static void createOutputDirs() {
+    static void initialize() throws IOException {
+        // Start with creating the directory in which we create all the files.
         //noinspection ResultOfMethodCallIgnored
         new File(OUTPUT_PATH).mkdirs();
+
+        // Only generate XML if it doesn't exist yet.
+        if (new File(LARGE_XML_PATH).exists()) {
+            return;
+        }
+
+        // Generated XML will be around 170MB. That is large enough I think.
+        LargeXmlGenerator.generateLargeXml(new FileWriter(LARGE_XML_PATH));
     }
 
     /**
